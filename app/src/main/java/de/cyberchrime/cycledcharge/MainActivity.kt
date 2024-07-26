@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import de.cyberchrime.cycledcharge.ui.theme.CycledChargeTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
     class MainActivity : ComponentActivity() {
 
@@ -29,11 +30,12 @@ import kotlinx.coroutines.launch
                 // Get the BatteryManager instance
                 val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
 
-                // Retrieve the charging current in microamperes (uA)
                 val chargingCurrent = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
 
-                // Convert microamperes to milliamperes
-                val chargingCurrentInmA = chargingCurrent / 1000
+                var chargingCurrentInmA: Int = abs(chargingCurrent) / 1000
+
+                if (!batteryManager.isCharging())
+                    chargingCurrentInmA = -chargingCurrentInmA
 
                 setContent {
                     CycledChargeTheme {
