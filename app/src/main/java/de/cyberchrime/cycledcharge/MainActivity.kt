@@ -1,4 +1,4 @@
-    package de.cyberchrime.cycledcharge
+package de.cyberchrime.cycledcharge
 
 import android.content.Context
 import android.os.BatteryManager
@@ -19,7 +19,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-    class MainActivity : ComponentActivity() {
+
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +28,7 @@ import kotlin.math.abs
 
         lifecycleScope.launch {
             while (true) {
-                // Get the BatteryManager instance
-                val batteryManager = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-
-                val chargingCurrent = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
-
-                var chargingCurrentInmA: Int = abs(chargingCurrent) / 1000
-
-                if (!batteryManager.isCharging())
-                    chargingCurrentInmA = -chargingCurrentInmA
+                val chargingCurrentInmA: Int = getChargingCurrent(this@MainActivity)
 
                 setContent {
                     CycledChargeTheme {
