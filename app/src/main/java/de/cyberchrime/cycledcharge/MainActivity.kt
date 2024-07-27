@@ -29,12 +29,14 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             while (true) {
                 val chargingCurrentInmA: Int = getChargingCurrent(this@MainActivity)
+                val speed: Float = getGpsSpeed(this@MainActivity)
 
                 setContent {
                     CycledChargeTheme {
                         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                            CurrentPrint(
+                            MeasurementPrint(
                                 currentInmA = "$chargingCurrentInmA",
+                                speed = "$speed",
                                 modifier = Modifier.padding(innerPadding)
                             )
                         }
@@ -48,9 +50,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CurrentPrint(currentInmA: String, modifier: Modifier = Modifier) {
+fun MeasurementPrint(currentInmA: String, speed: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Current: $currentInmA mA",
+        text = "Current: $currentInmA mA\nSpeed: $speed m/s",
         modifier = modifier
     )
 }
@@ -59,6 +61,6 @@ fun CurrentPrint(currentInmA: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     CycledChargeTheme {
-        CurrentPrint("0")
+        MeasurementPrint("0", "0")
     }
 }
